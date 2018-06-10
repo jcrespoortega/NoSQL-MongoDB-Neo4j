@@ -1,4 +1,8 @@
-﻿
+
+# CREATE THE GRPAH USING PERIODIC COMMIT 
+
+# AUTHORS:
+
 USING PERIODIC COMMIT 
 
 LOAD CSV WITH HEADERS FROM "file:///autores.csv" AS aut 
@@ -6,6 +10,7 @@ LOAD CSV WITH HEADERS FROM "file:///autores.csv" AS aut
 CREATE (p:Autor {name: aut.nombre, edad : toInt(aut.antiguedad), num_publicaciones: toInt(aut.numero_publicaciones)})
 
 
+# PUBLICATIONS:
 
 USING PERIODIC COMMIT 
 
@@ -23,6 +28,7 @@ CREATE CONSTRAINT ON (p:Autor) ASSERT p.name IS UNIQUE
 CREATE CONSTRAINT ON (pw:Publicacion) ASSERT pw.title IS UNIQUE
 
 
+# RELATIONS:
 
 USING PERIODIC COMMIT 
 
@@ -38,7 +44,7 @@ CREATE (p)-[:ES_AUTOR]->(pw)
 
 
 
-Indices:
+# iNDEXS
 
 CREATE INDEX ON :Autor(edad)
 
@@ -59,17 +65,9 @@ CREATE INDEX ON :Publicacion(tipo)
 
 
 
+#QUERIES:
 
-Así si es la forma correcta.
-
-
-
-
-CONSULTA 1:
-
-
-Esta es la correcta, 
-
+QUERY 1:
 
 
 MATCH (p:Autor{name:'Chua-Huang Huang'})-[ES_AUTOR]->(PUBLICACION)
@@ -78,9 +76,7 @@ RETURN (PUBLICACION)
 
 
 
-CONSULTA 2
-
- 
+QUERY 2:
 
 MATCH (p:Autor{name:'Chua-Huang Huang'})-[ES_AUTOR]->(PUBLICACION)
 
@@ -89,8 +85,7 @@ RETURN COUNT(PUBLICACION)
 
 
 
-CONSULTA 3
-
+QUERY 3:
 
 
 MATCH (pw:Publicacion{year:'2017'})
@@ -102,8 +97,7 @@ RETURN pw
 
 
 
-Consulta 4
-
+QUERY 4:
 
 
 MATCH (p:Autor)
@@ -114,23 +108,9 @@ RETURN (p)
 
 
 
-Consulta 5  (FALTa completar esta)
 
 
-
-MATCH (p)-[ES_AUTOR]->(PUBLICACION)
-
-WITH p, COUNT(PUBLICACION) as m, COUNT(PUBLICACION.tipo = 'article') as m2, COUNT(PUBLICACION.tipo = 'inproceedings') as m3
-
-RETURN m2, m3
-
-ORDER BY m DESC 
-LIMIT 10 
-
-
-
-
-Consulta 6 
+QUERY 5: 
 
 
 
@@ -142,7 +122,7 @@ RETURN n/m
 
 
 
-Consulta 7
+QUERY 6:
 
 
 
@@ -155,7 +135,7 @@ RETURN (target)
 
 
 
-Consulta 8
+QUERY 7:
 
 
 
@@ -170,7 +150,7 @@ LIMIT 5
 
 
 
-Consulta 9
+QUERY 8:
 
 
 
@@ -183,7 +163,7 @@ RETURN COUNT (p)
 
 
 
-Consulta 10
+QUERY 9:
 
 
 MATCH (p:Autor)-[ES_AUTOR]->(PUBLICACION)
