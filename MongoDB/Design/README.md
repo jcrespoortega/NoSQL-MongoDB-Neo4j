@@ -11,11 +11,11 @@ In order to speed up the queries, we need to use some strategies and make an int
   
 - Publications:
 
- + @key 
- + @mdate 
- + Author   
- + Type 
- + Year
+  + @key 
+  + @mdate 
+  + Author   
+  + Type 
+  + Year
 
 To obtain an improvement in performance at some queries, we precalculate some tags. This strategy outpreform the same design without 
 precalculous.
