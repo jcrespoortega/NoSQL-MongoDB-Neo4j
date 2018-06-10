@@ -110,7 +110,7 @@ RETURN (p)
 
 
 
-QUERY 5: 
+QUERY 6: 
 
 
 
@@ -122,7 +122,7 @@ RETURN n/m
 
 
 
-QUERY 6:
+QUERY 7:
 
 
 
@@ -135,7 +135,7 @@ RETURN (target)
 
 
 
-QUERY 7:
+QUERY 8:
 
 
 
@@ -150,7 +150,7 @@ LIMIT 5
 
 
 
-QUERY 8:
+QUERY 9:
 
 
 
@@ -163,7 +163,7 @@ RETURN COUNT (p)
 
 
 
-QUERY 9:
+QUERY 10:
 
 
 MATCH (p:Autor)-[ES_AUTOR]->(PUBLICACION)
