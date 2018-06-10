@@ -1,0 +1,197 @@
+﻿
+USING PERIODIC COMMIT 
+
+LOAD CSV WITH HEADERS FROM "file:///autores.csv" AS aut 
+
+CREATE (p:Autor {name: aut.nombre, edad : toInt(aut.antiguedad), num_publicaciones: toInt(aut.numero_publicaciones)})
+
+
+
+USING PERIODIC COMMIT 
+
+LOAD CSV WITH HEADERS FROM "file:///publ.csv" AS publi 
+
+CREATE (pw:Publicacion { title: publi.nombre, tipo: publi.tipo, year : toInt(publi.year) })
+
+
+
+
+CREATE CONSTRAINT ON (p:Autor) ASSERT p.name IS UNIQUE
+
+
+
+CREATE CONSTRAINT ON (pw:Publicacion) ASSERT pw.title IS UNIQUE
+
+
+
+USING PERIODIC COMMIT 
+
+LOAD CSV WITH HEADERS FROM "file:///publicaciones2.csv" AS relacion
+
+MATCH (p:Autor { name: relacion.autor}),
+  (pw:Publicacion { title: relacion.nombre}) 
+
+CREATE (p)-[:ES_AUTOR]->(pw)
+
+
+
+
+
+
+Indices:
+
+CREATE INDEX ON :Autor(edad)
+
+
+
+CREATE INDEX ON :Autor(num_publicaciones)
+
+
+
+CREATE INDEX ON :Autor(name)
+
+
+
+CREATE INDEX ON :Publicacion(year)
+
+
+CREATE INDEX ON :Publicacion(tipo)
+
+
+
+
+Así si es la forma correcta.
+
+
+
+
+CONSULTA 1:
+
+
+Esta es la correcta, 
+
+
+
+MATCH (p:Autor{name:'Chua-Huang Huang'})-[ES_AUTOR]->(PUBLICACION)
+
+RETURN (PUBLICACION)
+
+
+
+CONSULTA 2
+
+ 
+
+MATCH (p:Autor{name:'Chua-Huang Huang'})-[ES_AUTOR]->(PUBLICACION)
+
+RETURN COUNT(PUBLICACION)
+
+
+
+
+CONSULTA 3
+
+
+
+MATCH (pw:Publicacion{year:'2017'})
+
+WHERE (pw.tipo='article')
+
+RETURN pw
+
+
+
+
+Consulta 4
+
+
+
+MATCH (p:Autor)
+
+WHERE p.num_publicaciones < 5
+
+RETURN (p)
+
+
+
+Consulta 5  (FALTa completar esta)
+
+
+
+MATCH (p)-[ES_AUTOR]->(PUBLICACION)
+
+WITH p, COUNT(PUBLICACION) as m, COUNT(PUBLICACION.tipo = 'article') as m2, COUNT(PUBLICACION.tipo = 'inproceedings') as m3
+
+RETURN m2, m3
+
+ORDER BY m DESC 
+LIMIT 10 
+
+
+
+
+Consulta 6 
+
+
+
+MATCH (pw:Publicacion) 
+WITH  COUNT(pw) as m 
+MATCH (p:Autor) 
+WITH m, COUNT(p) as n 
+RETURN n/m
+
+
+
+Consulta 7
+
+
+
+MATCH (p:Autor{name:'Peter Lipps'})--(neighbor)--(target:Autor)
+
+WHERE NOT (p) = (target)
+
+RETURN (target)
+
+
+
+
+Consulta 8
+
+
+
+MATCH (p)-[ES_AUTOR]->(pw:Publicacion)
+
+RETURN p.edad
+
+ORDER BY p.edad DESC
+
+LIMIT 5
+ 
+
+
+
+Consulta 9
+
+
+
+MATCH (p)-[ES_AUTOR]->(pw:Publicacion)
+
+WHERE p.edad < 5
+
+RETURN COUNT (p)
+
+
+
+
+Consulta 10
+
+
+MATCH (p:Autor)-[ES_AUTOR]->(PUBLICACION)
+
+WITH COUNT(PUBLICACION.tipo = 'article') as m , 
+COUNT(PUBLICACION) as n
+
+RETURN (m/n)
+
+
+
